@@ -1,0 +1,26 @@
+<resources>
+    <string name="text_tes">Test</string>
+    <string name="todo">TODO</string>
+    <string name="text_test">Test</string>
+    <string name="todo1">TODO</string>
+    <string name="chanel_service">Chanel Service Example</string>
+    <string name="text_time_zero">00:00</string>
+    <string name="text_no_data">Lỗi dữ liệu</string>
+    <string name="menu_item_search_by_name">Tìm theo tên bài hát</string>
+    <string name="menu_item_sort_by_name">Sắp xếp theo tên</string>
+    <string name="app_name">App Music</string>
+    <string name="fragment_name">Danh sách bài hát</string>
+    <string name="name_song">Bài hát</string>
+    <string name="arrow_back_down">Trở lại</string>
+    <string name="text_search_hint">Nhập tên bài hát</string>
+    <string name="permlab_launchActivity">Quyền khởi chạy activity</string>
+    <string name="permdesc_lauchActivity">Cho phép khởi chạy activity của ứng dụng đang được bảo vệ với quyền này.
+    Bất kì ứng dụng nào có quyền nào thì đều có quyền khởi chạy activity</string>
+
+    <string name="oke">OK</string>
+    <string name="media_pemission_granted">Quyền truy cập media đã được chấp thuận. Đang chơi nhạc</string>
+    <string name="media_pemission_denied">Quyền truy cập media đã bị từ chối</string>
+    <string name="media_accsess_required">Quyền truy cập media là bắt buộc để chơi nhạc</string>
+    <string name="todo_image">TODO</string>
+
+</resources>
