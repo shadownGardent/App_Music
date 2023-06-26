@@ -1,6 +1,7 @@
 package com.example.app_music.adapter;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         }
 
         public void bind(Song song, OnItemClickListener listener) {
+            textSongName.setEllipsize(TextUtils.TruncateAt.END);
             textSongName.setText(song.getName());
+            textArtist.setEllipsize(TextUtils.TruncateAt.END);
             textArtist.setText(song.getArtist());
             setImage(song);
             view.setOnClickListener(l -> listener.onItemClick(song));
