@@ -68,9 +68,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         }
 
         public void bind(Song song, OnItemClickListener listener) {
-            textSongName.setEllipsize(TextUtils.TruncateAt.END);
+            textSongName.setSingleLine(true);
             textSongName.setText(song.getName());
-            textArtist.setEllipsize(TextUtils.TruncateAt.END);
+            textArtist.setSingleLine(true);
             textArtist.setText(song.getArtist());
             setImage(song);
             view.setOnClickListener(l -> listener.onItemClick(song));
