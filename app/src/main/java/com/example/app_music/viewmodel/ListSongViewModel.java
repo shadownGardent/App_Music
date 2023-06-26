@@ -1,16 +1,13 @@
 package com.example.app_music.viewmodel;
 
-import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.app_music.R;
 import com.example.app_music.apiservice.ApiService;
 import com.example.app_music.model.Song;
 import com.example.app_music.model.SongList;
-import com.example.app_music.parser.JsonParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +45,13 @@ public class ListSongViewModel extends ViewModel {
             public void onResponse(Call<SongList> call, Response<SongList> response) {
                 assert response.body() != null;
                 songList.addAll(response.body().getSongs());
-                if(songList.size() != 0) {
+                if (songList.size() != 0) {
                     liveDataSong.setValue(songList);
                 }
             }
 
             @Override
             public void onFailure(Call<SongList> call, Throwable t) {
-
             }
         });
     }

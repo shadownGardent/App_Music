@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_music.R;
-import com.example.app_music.model.adapter.SongAdapter;
+import com.example.app_music.adapter.SongAdapter;
 import com.example.app_music.controller.SearchController;
 import com.example.app_music.controller.SearchControllerImp;
 import com.example.app_music.controller.SortController;

@@ -1,4 +1,4 @@
-package com.example.app_music.model.adapter;
+package com.example.app_music.adapter;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
