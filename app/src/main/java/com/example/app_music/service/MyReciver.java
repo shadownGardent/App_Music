@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 
 public class MyReciver extends BroadcastReceiver {
+    // remember to declare reciver in AndroidManifest
     public static final String ACTION_MUSIC_RESPOND = "ACTION_MUSIC_RESPOND";
     @Override
     public void onReceive(Context context, Intent intent) {

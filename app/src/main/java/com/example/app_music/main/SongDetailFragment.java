@@ -1,6 +1,18 @@
 package com.example.app_music.main;
 
+import static com.example.app_music.service.MyReciver.ACTION_MUSIC_RESPOND;
+import static com.example.app_music.service.MyService.ACTION_MUSIC;
+import static com.example.app_music.service.MyService.ACTION_PAUSE;
+import static com.example.app_music.service.MyService.ACTION_RESUME;
+import static com.example.app_music.service.MyService.OBJETC_SONG;
+import static com.example.app_music.service.MyService.SEND_DATA_TO_ACTIVITY;
+import static com.example.app_music.service.MyService.STATUS_MEDIA;
+
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,11 +32,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.example.app_music.R;
 import com.example.app_music.model.Song;
-import com.example.app_music.parser.Utils;
+import com.example.app_music.service.MyService;
 import com.example.app_music.viewmodel.ListSongViewModel;
 import com.example.app_music.viewmodel.SongItemViewModel;
 
@@ -54,11 +67,27 @@ public class SongDetailFragment extends Fragment implements View.OnClickListener
     private static boolean isRepeat = false;
     private static boolean isRandom = false;
     private static boolean isPlaying = false;
-
+    private Song mSong;
+    private boolean isPlayingService;
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle == null) {
+                return;
+            }
+            mSong = (Song) bundle.get(OBJETC_SONG);
+            isPlayingService = bundle.getBoolean(STATUS_MEDIA);
+            int actionMusic = bundle.getInt(ACTION_MUSIC);
+            handleMusic(actionMusic);
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LocalBroadcastManager.getInstance(requireContext()).
+                registerReceiver(broadcastReceiver, new IntentFilter(SEND_DATA_TO_ACTIVITY));
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
@@ -68,7 +97,7 @@ public class SongDetailFragment extends Fragment implements View.OnClickListener
                         .addToBackStack("ListSongFragment")
                         .commit();
                 MainActivity.layoutBottom.setVisibility(View.VISIBLE);
-                if(mediaPlayer.isPlaying()) {
+                if (mediaPlayer.isPlaying()) {
                     MainActivity.imgPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_circle_outline_54));
                 }
             }
@@ -280,11 +309,12 @@ public class SongDetailFragment extends Fragment implements View.OnClickListener
                 btnPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_circle_outline_54));
                 mediaPlayer.pause();
                 stopAnimation();
+                sendActionToService(ACTION_PAUSE);
             } else {
                 btnPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_circle_outline_54));
                 mediaPlayer.start();
                 startAnimation();
-
+                sendActionToService(ACTION_RESUME);
             }
         } else if (v.getId() == R.id.image_btn_next) {
             int position = 0;
@@ -343,5 +373,27 @@ public class SongDetailFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver);
+    }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void handleMusic(int action) {
+        if (action == ACTION_PAUSE) {
+            btnPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_circle_outline_54));
+            stopAnimation();
+        }else if(action == ACTION_RESUME) {
+            btnPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_circle_outline_54));
+            startAnimation();
+        }
+    }
+
+    private void sendActionToService(int action) {
+        Context appContext = requireContext().getApplicationContext();
+        Intent intent = new Intent(appContext, MyService.class);
+        intent.putExtra(ACTION_MUSIC_RESPOND, action);
+        appContext.startService(intent);
+    }
 }

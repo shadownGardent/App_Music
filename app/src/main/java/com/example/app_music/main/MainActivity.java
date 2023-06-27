@@ -27,18 +27,18 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.app_music.R;
 import com.example.app_music.model.Song;
-import com.example.app_music.parser.Utils;
 import com.example.app_music.service.MyService;
 import com.example.app_music.viewmodel.SongItemViewModel;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_MEDIA = 1;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            if(bundle == null) {
+            if (bundle == null) {
                 return;
             }
             mSong = (Song) bundle.get(OBJETC_SONG);
@@ -89,16 +89,18 @@ public class MainActivity extends AppCompatActivity {
         imgPlay = findViewById(R.id.img_play_notify);
         txtName = findViewById(R.id.txt_name_notify);
         txtArtist = findViewById(R.id.txt_artist_notify);
-        imgPlay.setOnClickListener(v-> {
-            if(isPlaying) {
+        imgPlay.setOnClickListener(v -> {
+            if (isPlaying) {
                 sendActionToService(ACTION_PAUSE);
-            }else {
+                stopAnimation();
+            } else {
                 sendActionToService(ACTION_RESUME);
+                startAnimation();
             }
         });
 
-        imgNext.setOnClickListener(v-> sendActionToService(ACTION_NEXT));
-        imgPre.setOnClickListener(v-> sendActionToService(ACTION_PRE));
+        imgNext.setOnClickListener(v -> sendActionToService(ACTION_NEXT));
+        imgPre.setOnClickListener(v -> sendActionToService(ACTION_PRE));
     }
 
     private void addFragment() {
@@ -188,9 +190,10 @@ public class MainActivity extends AppCompatActivity {
     private void handleLayoutMusic(int action) {
         switch (action) {
             case ACTION_START:
-                if(isMain) {
+                if (isMain) {
                     layoutBottom.setVisibility(View.VISIBLE);
                 }
+                startAnimation();
                 showInfoSong(mSong);
                 setStatusBtnPlayOrPause();
                 break;
@@ -205,34 +208,69 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void startAnimation() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                imgAvatar.animate()
+                        .rotationBy(360)
+                        .withEndAction(this)
+                        .setDuration(17000)
+                        .setInterpolator(new LinearInterpolator())
+                        .start();
+            }
+        };
+        imgAvatar.animate()
+                .rotationBy(360)
+                .withEndAction(runnable)
+                .setDuration(17000)
+                .setInterpolator(new LinearInterpolator())
+                .start();
+    }
+
+    private void stopAnimation() {
+        imgAvatar.animate().cancel();
+    }
+
     private void showInfoSong(Song song) {
-        if(song == null) {
+        if (song == null) {
             return;
         }
 //        imgAvatar.setImageResource(Utils.getDrawableId(getApplicationContext(), song.getAvatar()));
-        Picasso.get().load(song.getAvatar()).into(imgAvatar);
+//        Picasso.get().load(song.getAvatar()).into(imgAvatar);
+        Glide.with(this)
+                .load(mSong.getAvatar())
+                .circleCrop()
+                .into(imgAvatar);
         txtName.setText(song.getName());
         txtArtist.setText(song.getArtist());
     }
 
     private void showInfoSong2() {
         Song song = itemViewModel.getSelectedSong().getValue();
-        if(song == null) {
+        if (song == null) {
             return;
         }
 //        imgAvatar.setImageResource(Utils.getDrawableId(getApplicationContext(), song.getAvatar()));
-        Picasso.get().load(song.getAvatar()).into(imgAvatar);
+//        Picasso.get().load(song.getAvatar()).into(imgAvatar);
+        Glide.with(this)
+                .load(song.getAvatar())
+                .circleCrop()
+                .into(imgAvatar);
         txtName.setText(song.getName());
         txtArtist.setText(song.getArtist());
     }
 
     private void setStatusBtnPlayOrPause() {
-        if(isPlaying) {
+        if (isPlaying) {
             imgPlay.setImageResource(R.drawable.ic_pause_circle_outline_54);
-        }else {
+            startAnimation();
+        } else {
             imgPlay.setImageResource(R.drawable.ic_play_circle_outline_54);
+            stopAnimation();
         }
     }
+
 
     private void sendActionToService(int action) {
         Intent intent = new Intent(this, MyService.class);

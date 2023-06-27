@@ -77,6 +77,7 @@ public class MyService extends Service {
                 sendActionToActivity(ACTION_START);
             }
         }
+        // lấy action bên reciver để sử lí sự kiện button trên notification được click
         int actionMusic = intent.getIntExtra(ACTION_MUSIC_RESPOND, 0);
         handleActionMusic(actionMusic);
         return START_NOT_STICKY;
@@ -117,7 +118,7 @@ public class MyService extends Service {
 //
 //    }
 
-
+    // set action cho các button trên remoteview bằng cách gửi PendingIntent sang broadcastReciver
     private PendingIntent getPedingIntent(Context context, int action) {
         Intent intent = new Intent(this, MyReciver.class);
         intent.putExtra(ACTION_MUSIC, action);
@@ -131,6 +132,7 @@ public class MyService extends Service {
         stopSelf();
     }
 
+    // xử lý sự kiện khi người dùng click button trong notification
     private void handleActionMusic(int action) {
         switch (action) {
             case ACTION_PAUSE:
@@ -165,7 +167,7 @@ public class MyService extends Service {
             position = 0;
         }
         SongDetailFragment.model.setSelectedSong(songs.get(position));
-        sendNotificationMedia(mSong);
+//        sendNotificationMedia(mSong);
         sendActionToActivity(ACTION_NEXT);
     }
 
@@ -186,7 +188,7 @@ public class MyService extends Service {
             position = songs.size() - 1;
         }
         SongDetailFragment.model.setSelectedSong(songs.get(position));
-        sendNotificationMedia(mSong);
+//        sendNotificationMedia(mSong);
         sendActionToActivity(ACTION_PRE);
     }
 
@@ -208,6 +210,7 @@ public class MyService extends Service {
         }
     }
 
+    // send action to activity
     private void sendActionToActivity(int action) {
         Intent intent = new Intent(SEND_DATA_TO_ACTIVITY);
         Bundle bundle = new Bundle();
@@ -217,6 +220,7 @@ public class MyService extends Service {
         intent.putExtras(bundle);
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        // gửi intent sang broadcastReciver
     }
 
     private void sendNotificationMedia(Song song) {
