@@ -1,7 +1,6 @@
 package com.example.app_music.adapter;
 
 import android.annotation.SuppressLint;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app_music.R;
-import com.example.app_music.model.Song;
+import com.example.app_music.service.model.Song;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.example.app_music.apiservice;
 
-import com.example.app_music.model.SongList;
+import com.example.app_music.service.model.SongList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

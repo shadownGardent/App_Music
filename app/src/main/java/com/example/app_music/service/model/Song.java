@@ -1,6 +1,5 @@
-package com.example.app_music.model;
+package com.example.app_music.service.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;

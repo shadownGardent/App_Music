@@ -6,7 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.app_music.model.Song;
+import com.example.app_music.service.model.Song;
 
 import java.util.Collections;
 import java.util.List;

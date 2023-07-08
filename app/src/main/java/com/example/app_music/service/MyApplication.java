@@ -19,7 +19,7 @@ public class MyApplication extends Application {
     private void createChanelNotification() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANEL_ID,
-                    getString(R.string.music_service), NotificationManager.IMPORTANCE_DEFAULT);
+                    getString(R.string.music_service), NotificationManager.IMPORTANCE_HIGH);
             NotificationManager manager = getSystemService(NotificationManager.class);
            if(manager != null) {
                manager.createNotificationChannel(channel);

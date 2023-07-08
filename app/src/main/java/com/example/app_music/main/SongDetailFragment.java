@@ -36,7 +36,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.example.app_music.R;
-import com.example.app_music.model.Song;
+import com.example.app_music.service.model.Song;
 import com.example.app_music.service.MyService;
 import com.example.app_music.viewmodel.ListSongViewModel;
 import com.example.app_music.viewmodel.SongItemViewModel;
@@ -209,6 +209,7 @@ public class SongDetailFragment extends Fragment implements View.OnClickListener
                         viewModel = ListSongViewModel.getInstance();
                         List<Song> songs = new ArrayList<>(Objects.requireNonNull(viewModel.getSongs().getValue()));
                         if (isRepeat) {
+                            btnPlay.setImageResource(R.drawable.ic_pause_circle_outline_54);
                             mp.seekTo(0);
                             mp.start();
                         } else if (isRandom) {
@@ -234,7 +235,7 @@ public class SongDetailFragment extends Fragment implements View.OnClickListener
                         }
                     }
                 });
-                handler.postDelayed(this, 500);
+                handler.postDelayed(this, 100);
             }
         }, 100);
     }

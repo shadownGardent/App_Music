@@ -23,7 +23,7 @@ import com.example.app_music.controller.SearchController;
 import com.example.app_music.controller.SearchControllerImp;
 import com.example.app_music.controller.SortController;
 import com.example.app_music.controller.SortControllerImp;
-import com.example.app_music.model.Song;
+import com.example.app_music.service.model.Song;
 import com.example.app_music.viewmodel.ListSongViewModel;
 import com.example.app_music.viewmodel.SongItemViewModel;
 

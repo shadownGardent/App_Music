@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.app_music.apiservice.ApiService;
-import com.example.app_music.model.Song;
-import com.example.app_music.model.SongList;
+import com.example.app_music.service.model.Song;
+import com.example.app_music.service.model.SongList;
 
 import java.util.ArrayList;
 import java.util.List;

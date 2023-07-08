@@ -1,6 +1,6 @@
 package com.example.app_music.controller;
 
-import com.example.app_music.model.Song;
+import com.example.app_music.service.model.Song;
 
 import java.util.List;
 

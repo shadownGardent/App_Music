@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.app_music.R;
-import com.example.app_music.model.Song;
+import com.example.app_music.service.model.Song;
 import com.example.app_music.service.MyService;
 import com.example.app_music.viewmodel.SongItemViewModel;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private Song mSong;
     private boolean isPlaying;
     private boolean isMain;
+    private boolean isGranted = false;
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     private void showMediaPreview() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
+            isGranted = true;
             startMedia();
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -172,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == PERMISSION_REQUEST_MEDIA) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Snackbar.make(layout, R.string.media_pemission_granted, BaseTransientBottomBar.LENGTH_SHORT).show();
+                isGranted = true;
                 startMedia();
             } else {
                 Snackbar.make(layout, R.string.media_pemission_denied, BaseTransientBottomBar.LENGTH_SHORT).show();
@@ -190,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
     private void handleLayoutMusic(int action) {
         switch (action) {
             case ACTION_START:
-                if (isMain) {
+                if (isMain && isGranted) {
                     layoutBottom.setVisibility(View.VISIBLE);
                 }
                 startAnimation();
@@ -270,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
             stopAnimation();
         }
     }
-
 
     private void sendActionToService(int action) {
         Intent intent = new Intent(this, MyService.class);

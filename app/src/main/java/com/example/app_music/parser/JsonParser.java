@@ -3,7 +3,7 @@ package com.example.app_music.parser;
 import android.content.Context;
 
 import com.example.app_music.R;
-import com.example.app_music.model.Song;
+import com.example.app_music.service.model.Song;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
